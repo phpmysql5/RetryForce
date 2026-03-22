@@ -1,15 +1,17 @@
-public with sharing class AccountTriggerHandler {
+public with sharing class AccountTriggerHandler extends TriggerHandler {
 
     private static final Decimal HIGH_VALUE_THRESHOLD = 5000;
 
-    public static void handle(List<Account> newAccounts) {
-        markHighValueAccounts(newAccounts);
+    public override void beforeInsert(List<SObject> newRecords) {
+        markHighValueAccounts((List<Account>) newRecords);
     }
 
-    public static void handleInsert(List<Account> newAccounts) {
-        // Queue the Slack notification asynchronously
-        // This avoids "Callout from triggers are not supported" error
-        System.enqueueJob(new SlackNotificationQueue(newAccounts));
+    public override void beforeUpdate(List<SObject> newRecords, Map<Id, SObject> oldMap) {
+        markHighValueAccounts((List<Account>) newRecords);
+    }
+
+    public override void afterInsert(List<SObject> newRecords) {
+        System.enqueueJob(new SlackNotificationQueue((List<Account>) newRecords));
     }
 
     private static void markHighValueAccounts(List<Account> accounts) {
