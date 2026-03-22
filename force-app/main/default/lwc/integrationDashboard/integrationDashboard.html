@@ -1,0 +1,14 @@
+<template>
+    <lightning-card title="Integration Dashboard" icon-name="custom:custom63">
+        <div class="slds-p-horizontal_medium slds-p-bottom_small">
+            Failed integrations with one-click manual retry.
+        </div>
+        <lightning-datatable
+            key-field="Id"
+            data={logs}
+            columns={columns}
+            hide-checkbox-column
+            onrowaction={handleRowAction}>
+        </lightning-datatable>
+    </lightning-card>
+</template>
