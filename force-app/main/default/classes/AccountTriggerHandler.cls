@@ -1,6 +1,6 @@
 public with sharing class AccountTriggerHandler {
 
-    private static final Decimal HIGH_VALUE_THRESHOLD = 10000;
+    private static final Decimal HIGH_VALUE_THRESHOLD = 5000;
 
     public static void handle(List<Account> newAccounts) {
         markHighValueAccounts(newAccounts);
@@ -14,7 +14,7 @@ public with sharing class AccountTriggerHandler {
 
     private static void markHighValueAccounts(List<Account> accounts) {
         for (Account acc : accounts) {
-            acc.Is_High_Value__c = (acc.AnnualRevenue != null && acc.AnnualRevenue > HIGH_VALUE_THRESHOLD);
+            acc.Is_High_Value__c = (acc.AnnualRevenue != null && acc.AnnualRevenue <= HIGH_VALUE_THRESHOLD);
         }
     }
 }
